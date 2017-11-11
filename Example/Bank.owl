@@ -1,0 +1,684 @@
+# 
+# This ontology is automatically written by the FRaMED OWL Ontology generator
+#
+# The following features are not supported:
+#       - Compartment inheritance, because too many weird things can happen, which are not checked in FRaMED
+#
+#       - Compartments that play a role in another compartment, because on object level it would enforce a new
+#         compartment instance, i.e. a new individual on meta level
+#
+#       - intra relationship constraints like reflexive or symmetric, since actually that are constraints on the
+#         objects that play the roles and not on the roles themselves.
+#
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+Prefix: rosi: <http://www.rosi-project.org/ontologies#>
+
+Ontology: <http://www.rosi-project.org/ontologies/2017-11-12/Bank>
+
+
+
+
+####################################################################################################
+# Used OWL datatypes                                                                               #
+####################################################################################################
+
+Datatype: xsd:boolean
+
+#
+# Used OWL annotations
+#
+
+AnnotationProperty: rosi:isMeta
+	Range: <http://www.w3.org/2001/XMLSchema#boolean>
+
+AnnotationProperty: rdfs:isDefinedBy
+
+
+
+
+####################################################################################################
+# General axioms and declarations, independent of the CROModel                                     #
+####################################################################################################
+
+Class: owl:Thing
+	SubClassOf:
+		rosi:CompartmentType
+		
+Class: rosi:CompartmentType
+Class: rosi:NaturalType
+
+Individual: rosi:Source
+	Types: 
+		Annotations: rdfs:label "objectGlobal"
+		(not rosi:NaturalType) and (not rosi:Transaction)
+
+Individual: rosi:Target
+	Types: 
+		Annotations: rdfs:label "objectGlobal"
+		(not rosi:NaturalType) and (not rosi:Transaction)
+
+Individual: rosi:Consultant
+	Types: 
+		Annotations: rdfs:label "objectGlobal"
+		(not rosi:NaturalType) and (not rosi:Transaction)
+
+Individual: rosi:Customer
+	Types: 
+		Annotations: rdfs:label "objectGlobal"
+		(not rosi:NaturalType) and (not rosi:Transaction)
+
+Individual: rosi:MoneyTransfer
+	Types: 
+		Annotations: rdfs:label "objectGlobal"
+		(not rosi:NaturalType) and (not rosi:Transaction)
+
+Individual: rosi:CheckingsAccount
+	Types: 
+		Annotations: rdfs:label "objectGlobal"
+		(not rosi:NaturalType) and (not rosi:Transaction)
+
+Individual: rosi:SavingsAccount
+	Types: 
+		Annotations: rdfs:label "objectGlobal"
+		(not rosi:NaturalType) and (not rosi:Transaction)
+
+Individual: rosi:GeneratedRoleGroup2
+	Types:
+		Annotations: rdfs:label "objectGlobal"
+		(not rosi:NaturalType)  and (not rosi:Transaction)
+
+Individual: rosi:GeneratedRoleGroup1
+	Types:
+		Annotations: rdfs:label "objectGlobal"
+		(not rosi:NaturalType)  and (not rosi:Transaction)
+
+Individual: rosi:occurrenceCounter
+	Types:
+		Annotations: rdfs:label "objectGlobal"
+		not rosi:NaturalType
+
+DifferentIndividuals:
+	Annotations: rdfs:label "objectGlobal"
+	rosi:occurrenceCounter,
+	rosi:Source,
+	rosi:Target,
+	rosi:Consultant,
+	rosi:Customer,
+	rosi:MoneyTransfer,
+	rosi:CheckingsAccount,
+	rosi:SavingsAccount,
+	rosi:GeneratedRoleGroup2,
+	rosi:GeneratedRoleGroup1
+
+
+
+
+####################################################################################################
+# The declaration of all compartment types that occur in the model                                 #
+####################################################################################################
+
+Class: rosi:CompartmentType
+    DisjointUnionOf:
+        rosi:Transaction,
+        rosi:Bank
+
+Class: rosi:Transaction
+Class: rosi:Bank
+	SubClassOf: Annotations: rdfs:label "objectGlobal" owl:Nothing
+
+ObjectProperty: rosi:nested
+
+Class: rosi:___Bank.TransactionPlaysNothing
+Class: rosi:___Bank.TransactionPlaysSomething.Def
+Class: rosi:Bank
+	SubClassOf:
+		rosi:___Bank.TransactionPlaysNothing or (rosi:nested some rosi:Transaction),
+		rosi:___Bank.TransactionPlaysSomething.Def
+Class: rosi:TransactionPlaysSomething
+	EquivalentTo:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.TransactionPlaysSomething.Def
+		rosi:Transaction and (rosi:plays some owl:Thing)
+	SubClassOf:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.TransactionPlaysNothing
+		owl:Nothing
+
+
+
+
+####################################################################################################
+# The declaration of all natural types that occur in the model                                     #
+####################################################################################################
+
+Class: rosi:NaturalType
+	SubClassOf:
+		owl:Nothing
+
+Class: rosi:Person
+Class: rosi:Company
+Class: rosi:Account
+
+
+
+
+####################################################################################################
+# Natural type inheritance                                                                         #
+####################################################################################################
+
+Class: rosi:NaturalType
+	DisjointUnionOf:
+		Annotations: rdfs:label "objectGlobal"
+		rosi:Person, rosi:Company, rosi:Account
+	
+Class: rosi:Person
+
+
+Class: rosi:Company
+
+
+Class: rosi:Account
+
+
+
+
+
+
+####################################################################################################
+# The declaration of all role types that occur in the model                                        #
+####################################################################################################
+
+Class: rosi:RoleType
+	EquivalentTo:
+		Annotations: rdfs:label "objectGlobal"
+		{rosi:Source,
+		rosi:Target,
+		rosi:Consultant,
+		rosi:Customer,
+		rosi:MoneyTransfer,
+		rosi:CheckingsAccount,
+		rosi:SavingsAccount}
+
+
+
+
+####################################################################################################
+# The declaration of the plays relation as OWL object property                                     #
+####################################################################################################
+
+
+ObjectProperty: owl:bottomObjectProperty
+
+ObjectProperty: rosi:plays
+	Domain:
+		Annotations: rdfs:label "objectGlobal"
+		rosi:NaturalType or rosi:Transaction
+	Range:
+		Annotations: rdfs:label "objectGlobal"
+		rosi:RoleType or rosi:RoleGroup
+	SubPropertyOf:
+		owl:bottomObjectProperty
+		
+
+
+
+
+####################################################################################################
+# fills relation                                                                                   #
+####################################################################################################
+
+Class: rosi:___Transaction.Person.Fills
+Class: rosi:Transaction
+	SubClassOf: rosi:___Transaction.Person.Fills
+Class: rosi:___Bank.Person.Fills
+Class: rosi:Bank
+	SubClassOf: rosi:___Bank.Person.Fills
+
+Class: rosi:___Transaction.Company.Fills
+Class: rosi:Transaction
+	SubClassOf: rosi:___Transaction.Company.Fills
+Class: rosi:___Bank.Company.Fills
+Class: rosi:Bank
+	SubClassOf: rosi:___Bank.Company.Fills
+
+Class: rosi:___Transaction.Account.Fills
+Class: rosi:Transaction
+	SubClassOf: rosi:___Transaction.Account.Fills
+Class: rosi:___Bank.Account.Fills
+Class: rosi:Bank
+	SubClassOf: rosi:___Bank.Account.Fills
+
+Class: rosi:Person
+	SubClassOf:
+		Annotations: rdfs:isDefinedBy rosi:___Transaction.Person.Fills
+		rosi:plays only rosi:RoleGroup
+	SubClassOf:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.Person.Fills
+		rosi:plays only (rosi:RoleGroup or
+			{rosi:Consultant,
+			rosi:Customer})
+
+Class: rosi:Company
+	SubClassOf:
+		Annotations: rdfs:isDefinedBy rosi:___Transaction.Company.Fills
+		rosi:plays only rosi:RoleGroup
+	SubClassOf:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.Company.Fills
+		rosi:plays only (rosi:RoleGroup or
+			{rosi:Customer})
+
+Class: rosi:Account
+	SubClassOf:
+		Annotations: rdfs:isDefinedBy rosi:___Transaction.Account.Fills
+		rosi:plays only (rosi:RoleGroup or
+			{rosi:Source,
+			rosi:Target})
+	SubClassOf:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.Account.Fills
+		rosi:plays only (rosi:RoleGroup or
+			{rosi:CheckingsAccount,
+			rosi:SavingsAccount})
+
+Class: rosi:___Transaction.Transaction.Fills
+Class: rosi:Transaction
+	SubClassOf: rosi:___Transaction.Transaction.Fills
+Class: rosi:___Bank.Transaction.Fills
+Class: rosi:Bank
+	SubClassOf: rosi:___Bank.Transaction.Fills
+
+Class: rosi:Transaction
+	SubClassOf:
+		Annotations: rdfs:isDefinedBy rosi:___Transaction.Transaction.Fills
+		rosi:plays only rosi:RoleGroup
+	SubClassOf:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.Transaction.Fills
+		rosi:plays only (rosi:RoleGroup or
+			{rosi:MoneyTransfer})
+
+
+
+
+####################################################################################################
+# The declaration of all relationship types that occur in the model                                #
+####################################################################################################
+
+
+### trans ###
+#############
+
+ObjectProperty: rosi:Transaction.trans
+	Domain:
+		Annotations: rdfs:isDefinedBy rosi:___NotTransaction.trans.Bottom
+		owl:Nothing
+	Domain:
+		Annotations: rdfs:isDefinedBy rosi:___Transaction.trans.Domain
+		rosi:plays some {rosi:Source}
+	Range:
+		Annotations: rdfs:isDefinedBy rosi:___Transaction.trans.Range
+		rosi:plays some {rosi:Target}
+
+Class: rosi:___NotTransaction.trans.Bottom
+Class: rosi:___Transaction.trans.Domain
+Class: rosi:___Transaction.trans.Range
+Class: rosi:Transaction
+	SubClassOf: 
+		rosi:___Transaction.trans.Domain and
+		rosi:___Transaction.trans.Range
+Class: rosi:NotTransaction
+	EquivalentTo:
+		not rosi:Transaction
+	SubClassOf:
+		rosi:___NotTransaction.trans.Bottom
+
+
+### own_ca ###
+##############
+
+ObjectProperty: rosi:Bank.own_ca
+	Domain:
+		Annotations: rdfs:isDefinedBy rosi:___NotBank.own_ca.Bottom
+		owl:Nothing
+	Domain:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.own_ca.Domain
+		rosi:plays some {rosi:CheckingsAccount}
+	Range:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.own_ca.Range
+		rosi:plays some {rosi:Customer}
+
+Class: rosi:___NotBank.own_ca.Bottom
+Class: rosi:___Bank.own_ca.Domain
+Class: rosi:___Bank.own_ca.Range
+Class: rosi:Bank
+	SubClassOf: 
+		rosi:___Bank.own_ca.Domain and
+		rosi:___Bank.own_ca.Range
+Class: rosi:NotBank
+	EquivalentTo:
+		not rosi:Bank
+	SubClassOf:
+		rosi:___NotBank.own_ca.Bottom
+
+
+### advices ###
+###############
+
+ObjectProperty: rosi:Bank.advices
+	Domain:
+		Annotations: rdfs:isDefinedBy rosi:___NotBank.advices.Bottom
+		owl:Nothing
+	Domain:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.advices.Domain
+		rosi:plays some {rosi:Consultant}
+	Range:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.advices.Range
+		rosi:plays some {rosi:Customer}
+
+Class: rosi:___NotBank.advices.Bottom
+Class: rosi:___Bank.advices.Domain
+Class: rosi:___Bank.advices.Range
+Class: rosi:Bank
+	SubClassOf: 
+		rosi:___Bank.advices.Domain and
+		rosi:___Bank.advices.Range
+Class: rosi:NotBank
+	EquivalentTo:
+		not rosi:Bank
+	SubClassOf:
+		rosi:___NotBank.advices.Bottom
+
+
+### own_sa ###
+##############
+
+ObjectProperty: rosi:Bank.own_sa
+	Domain:
+		Annotations: rdfs:isDefinedBy rosi:___NotBank.own_sa.Bottom
+		owl:Nothing
+	Domain:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.own_sa.Domain
+		rosi:plays some {rosi:Customer}
+	Range:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.own_sa.Range
+		rosi:plays some {rosi:SavingsAccount}
+
+Class: rosi:___NotBank.own_sa.Bottom
+Class: rosi:___Bank.own_sa.Domain
+Class: rosi:___Bank.own_sa.Range
+Class: rosi:Bank
+	SubClassOf: 
+		rosi:___Bank.own_sa.Domain and
+		rosi:___Bank.own_sa.Range
+Class: rosi:NotBank
+	EquivalentTo:
+		not rosi:Bank
+	SubClassOf:
+		rosi:___NotBank.own_sa.Bottom
+
+
+### issues ###
+##############
+
+ObjectProperty: rosi:Bank.issues
+	Domain:
+		Annotations: rdfs:isDefinedBy rosi:___NotBank.issues.Bottom
+		owl:Nothing
+	Domain:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.issues.Domain
+		rosi:plays some {rosi:Customer}
+	Range:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.issues.Range
+		rosi:plays some {rosi:MoneyTransfer}
+
+Class: rosi:___NotBank.issues.Bottom
+Class: rosi:___Bank.issues.Domain
+Class: rosi:___Bank.issues.Range
+Class: rosi:Bank
+	SubClassOf: 
+		rosi:___Bank.issues.Domain and
+		rosi:___Bank.issues.Range
+Class: rosi:NotBank
+	EquivalentTo:
+		not rosi:Bank
+	SubClassOf:
+		rosi:___NotBank.issues.Bottom
+
+
+
+
+####################################################################################################
+# The declaration of all role groups that occur in the model                                       #
+####################################################################################################
+
+Class: rosi:RoleGroup
+	EquivalentTo:
+		Annotations: rdfs:label "objectGlobal"
+		{rosi:GeneratedRoleGroup2,
+		rosi:GeneratedRoleGroup1}
+
+### GeneratedRoleGroup2 ###
+###########################
+
+Class: rosi:___Transaction.GeneratedRoleGroup2.PlaysDef1
+Class: rosi:___Transaction.GeneratedRoleGroup2.PlaysDef2
+Class: rosi:Transaction
+	SubClassOf:
+		rosi:___Transaction.GeneratedRoleGroup2.PlaysDef1 and rosi:___Transaction.GeneratedRoleGroup2.PlaysDef2
+Class: rosi:PlaysGeneratedRoleGroup2
+	EquivalentTo:
+		Annotations: rdfs:isDefinedBy rosi:___Transaction.GeneratedRoleGroup2.PlaysDef1
+		rosi:plays some {rosi:GeneratedRoleGroup2}
+	EquivalentTo:
+		Annotations: rdfs:isDefinedBy rosi:___Transaction.GeneratedRoleGroup2.PlaysDef2
+		rosi:NaturalType and
+		(rosi:plays min 1 {rosi:Source, rosi:Target}) and
+		(rosi:plays max 1 {rosi:Source, rosi:Target})
+
+Class: rosi:___Transaction.GeneratedRoleGroup2.MustPlay1
+Class: rosi:___Transaction.GeneratedRoleGroup2.MustPlay2
+Class: rosi:Transaction
+	SubClassOf:
+		rosi:___Transaction.GeneratedRoleGroup2.MustPlay1 and rosi:___Transaction.GeneratedRoleGroup2.MustPlay2
+		
+Class: rosi:MustPlayGeneratedRoleGroup2
+	EquivalentTo:
+		Annotations: rdfs:isDefinedBy rosi:___Transaction.GeneratedRoleGroup2.MustPlay1
+		(rosi:plays some {rosi:Source}) or
+		(rosi:plays some {rosi:Target})
+	SubClassOf:
+		Annotations: rdfs:isDefinedBy rosi:___Transaction.GeneratedRoleGroup2.MustPlay2
+		rosi:NaturalType and
+		(rosi:plays min 1 {rosi:Source, rosi:Target}) and
+		(rosi:plays max 1 {rosi:Source, rosi:Target}) and
+		rosi:plays some {rosi:GeneratedRoleGroup2}
+
+
+### GeneratedRoleGroup1 ###
+###########################
+
+Class: rosi:___Bank.GeneratedRoleGroup1.PlaysDef1
+Class: rosi:___Bank.GeneratedRoleGroup1.PlaysDef2
+Class: rosi:Bank
+	SubClassOf:
+		rosi:___Bank.GeneratedRoleGroup1.PlaysDef1 and rosi:___Bank.GeneratedRoleGroup1.PlaysDef2
+Class: rosi:PlaysGeneratedRoleGroup1
+	EquivalentTo:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.GeneratedRoleGroup1.PlaysDef1
+		rosi:plays some {rosi:GeneratedRoleGroup1}
+	EquivalentTo:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.GeneratedRoleGroup1.PlaysDef2
+		rosi:NaturalType and
+		(rosi:plays min 1 {rosi:CheckingsAccount, rosi:SavingsAccount}) and
+		(rosi:plays max 1 {rosi:CheckingsAccount, rosi:SavingsAccount})
+
+Class: rosi:___Bank.GeneratedRoleGroup1.MustPlay1
+Class: rosi:___Bank.GeneratedRoleGroup1.MustPlay2
+Class: rosi:Bank
+	SubClassOf:
+		rosi:___Bank.GeneratedRoleGroup1.MustPlay1 and rosi:___Bank.GeneratedRoleGroup1.MustPlay2
+		
+Class: rosi:MustPlayGeneratedRoleGroup1
+	EquivalentTo:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.GeneratedRoleGroup1.MustPlay1
+		(rosi:plays some {rosi:CheckingsAccount}) or
+		(rosi:plays some {rosi:SavingsAccount})
+	SubClassOf:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.GeneratedRoleGroup1.MustPlay2
+		rosi:NaturalType and
+		(rosi:plays min 1 {rosi:CheckingsAccount, rosi:SavingsAccount}) and
+		(rosi:plays max 1 {rosi:CheckingsAccount, rosi:SavingsAccount}) and
+		rosi:plays some {rosi:GeneratedRoleGroup1}
+
+
+
+
+
+####################################################################################################
+# Cardinal constraints of relationship types                                                       #
+####################################################################################################
+
+### trans ###
+#############
+
+
+Class: owl:Thing
+	SubClassOf:
+        Annotations: rdfs:isDefinedBy rosi:___Transaction.trans.CardinalityDomain
+        (not (rosi:plays some {rosi:Source}))
+		 or ((rosi:Transaction.trans min 1 owl:Thing) and (rosi:Transaction.trans max 1 owl:Thing))
+
+Class: rosi:___Transaction.trans.CardinalityDomain
+
+Class: rosi:Transaction
+    SubClassOf:
+        rosi:___Transaction.trans.CardinalityDomain
+
+Class: owl:Thing
+	SubClassOf:
+        Annotations: rdfs:isDefinedBy rosi:___Transaction.trans.CardinalityRange
+        (not (rosi:plays some {rosi:Target}))
+		 or ((inverse (rosi:Transaction.trans) min 1 owl:Thing) and (inverse (rosi:Transaction.trans) max 1 owl:Thing))
+
+Class: rosi:___Transaction.trans.CardinalityRange
+
+Class: rosi:Transaction
+    SubClassOf:
+        rosi:___Transaction.trans.CardinalityRange
+
+
+### own_ca ###
+##############
+
+
+Class: owl:Thing
+	SubClassOf:
+        Annotations: rdfs:isDefinedBy rosi:___Bank.own_ca.CardinalityDomain
+        (not (rosi:plays some {rosi:CheckingsAccount}))
+		 or ((rosi:Bank.own_ca min 1 owl:Thing) and (rosi:Bank.own_ca max 1 owl:Thing))
+
+Class: rosi:___Bank.own_ca.CardinalityDomain
+
+Class: rosi:Bank
+    SubClassOf:
+        rosi:___Bank.own_ca.CardinalityDomain
+
+
+### advices ###
+###############
+
+
+Class: owl:Thing
+	SubClassOf:
+        Annotations: rdfs:isDefinedBy rosi:___Bank.advices.CardinalityDomain
+        (not (rosi:plays some {rosi:Consultant}))
+		 or ((rosi:Bank.advices min 1 owl:Thing))
+
+Class: rosi:___Bank.advices.CardinalityDomain
+
+Class: rosi:Bank
+    SubClassOf:
+        rosi:___Bank.advices.CardinalityDomain
+
+
+### own_sa ###
+##############
+
+
+Class: owl:Thing
+	SubClassOf:
+        Annotations: rdfs:isDefinedBy rosi:___Bank.own_sa.CardinalityRange
+        (not (rosi:plays some {rosi:SavingsAccount}))
+		 or ((inverse (rosi:Bank.own_sa) min 1 owl:Thing))
+
+Class: rosi:___Bank.own_sa.CardinalityRange
+
+Class: rosi:Bank
+    SubClassOf:
+        rosi:___Bank.own_sa.CardinalityRange
+
+
+### issues ###
+##############
+
+
+Class: owl:Thing
+	SubClassOf:
+        Annotations: rdfs:isDefinedBy rosi:___Bank.issues.CardinalityDomain
+        (not (rosi:plays some {rosi:Customer}))
+		 or ((rosi:Bank.issues min 1 owl:Thing))
+
+Class: rosi:___Bank.issues.CardinalityDomain
+
+Class: rosi:Bank
+    SubClassOf:
+        rosi:___Bank.issues.CardinalityDomain
+
+Class: owl:Thing
+	SubClassOf:
+        Annotations: rdfs:isDefinedBy rosi:___Bank.issues.CardinalityRange
+        (not (rosi:plays some {rosi:MoneyTransfer}))
+		 or ((inverse (rosi:Bank.issues) min 1 owl:Thing) and (inverse (rosi:Bank.issues) max 1 owl:Thing))
+
+Class: rosi:___Bank.issues.CardinalityRange
+
+Class: rosi:Bank
+    SubClassOf:
+        rosi:___Bank.issues.CardinalityRange
+
+
+
+
+
+####################################################################################################
+# The declaration of the occurrence constraints.                                                   #
+####################################################################################################
+
+Class: rosi:___Bank.Consultant.Occurrence
+Class: rosi:Bank
+	SubClassOf: rosi:___Bank.Consultant.Occurrence
+Individual: rosi:Consultant
+	Types:
+		Annotations: rdfs:isDefinedBy rosi:___Bank.Consultant.Occurrence
+		(inverse rosi:plays min 1)
+
+
+Class: rosi:___Transaction.GeneratedRoleGroup2.Occurrence
+Class: rosi:Transaction
+	SubClassOf: rosi:___Transaction.GeneratedRoleGroup2.Occurrence
+Individual: rosi:GeneratedRoleGroup2
+	Types:
+		Annotations: rdfs:isDefinedBy rosi:___Transaction.GeneratedRoleGroup2.Occurrence
+		(inverse rosi:plays min 1) and (inverse rosi:plays max 1)
+
+
+
+
+
+
+####################################################################################################
+# This is the end of the automatically generated OWL File.                                         #
+# If you want to add any axioms manually you should do it below here.                              #
+####################################################################################################
+
