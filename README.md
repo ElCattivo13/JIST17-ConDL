@@ -1,6 +1,6 @@
 # Reasoning on Context-Dependent Domain Models (Supplementary Material)
 
-Supplementary material for the JIST 2017 publication 'Reasoning on Context-Dependent Domain Models'.
+Supplementary material for the JIST 2017 publication *"Reasoning on Context-Dependent Domain Models"*.
 
 ## Getting the Running Example, Reproduceable Benchmark, and Dataset
 
