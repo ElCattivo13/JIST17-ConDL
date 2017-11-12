@@ -15,7 +15,7 @@ The repository already includes the JConHT reasoner, in the version used in the 
 
 ## Running Example
 
-The [Example] folder contains the example domain model of the banking application, as well as the corresponding ConDL ontology:
+The [Example](Example/) folder contains the example domain model of the banking application, as well as the corresponding ConDL ontology:
 
 * `Bank.crom_dia`, the visual representation of the *Banking* domain model (can be opened by FRaMED).
 * `Bank.crom`, the corresponding structural representation of the *Banking* domain model.
@@ -35,7 +35,7 @@ This schould result in a message `The context ontology is not consistent`.
 
 To be able to reproduce our benchmark, we provide a collection of bash scripts to benchmark the individual configurations.
 
-* For each configuration there is a dedicated folder in the [Benchmark] directory containing:
+* For each configuration there is a dedicated folder in the [Benchmark](Benchmark/) directory containing:
     * `JConHT.jar`, the Java Contextualized Hyper Tableau reasoner
     * `org.rosi.crom.benchmark.jar`, the CROM model generator 
     * `org.rosi.crom.toformal.cli.jar`, a commandline model transformator used to translate CROM models to ConDL ontologies
@@ -57,9 +57,9 @@ This script will create the CROM models, ConDL ontologies and Results of the Rea
 
 ## Results of the Performance Benchmark
 
-The results of our performance benchmark have been collected in the [Dataset] folder.
+The results of our performance benchmark have been collected in the [Dataset](Dataset/) folder.
 
-* For each configuration there is a dedicated folder in the [Dataset] directory containing:
+* For each configuration there is a dedicated folder in the [Dataset](Dataset/) directory containing:
     * For each Number *n*, there is a dedicated subdirectory
         * `benchmark.csv`, execution times of the model generator
         * `transform.csv`, execution times of the model transformation mapping CROM to ConDL
