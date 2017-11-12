@@ -29,7 +29,7 @@ $> java -jar org.rosi.crom.toformal.cli.jar -towl Bank.crom > Bank.owl
 $> java -jar JConHT.jar Bank.owl -v
 ~~~
 
-This schould result in a message `The context ontology is not consistent`.
+This should result in a message `The context ontology is not consistent`.
 
 ## Reproduceable Benchmark
 
