@@ -1,6 +1,6 @@
 #!/bin/bash
 
-JAVA="/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java -Xmx12g"
+JAVA="java -Xmx12g"
 
 if [ ! -f "models.csv" ] ; then
 	echo "Number;Breadth;Depth;RoleGroups;RelationshipTypes;Concepts" > "models.csv"	
