@@ -11,7 +11,7 @@ git clone https://github.com/ElCattivo13/JIST17-ConDL
 cd JIST17-ConDL
 ~~~
 
-The repository already includes the JConHT reasoner, in the version used in the publication.
+The repository already includes the JConHT reasoner, in the version used in the publication. However, it requires a *Linux* environment with `bash` and a *Java 8* runtime environment.
 
 ## Running Example
 
