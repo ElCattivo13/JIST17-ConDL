@@ -2,7 +2,7 @@
 
 Supplementary material for the [JIST 2017](http://www.ict.griffith.edu.au/aist/jist2017/JIST.php?id=home) publication *"Reasoning on Context-Dependent Domain Models"*.
 
-## Getting the Running Example, Reproduceable Benchmark, and Dataset
+## Getting the Running Example, Reproducible Benchmark, and Dataset
 
 Simply clone the repository using git.
 
@@ -31,7 +31,7 @@ $> java -jar JConHT.jar Bank.owl -v
 
 This should result in a message `The context ontology is not consistent`.
 
-## Reproduceable Benchmark
+## Reproducible Benchmark
 
 To be able to reproduce our benchmark, we provide a collection of bash scripts to benchmark the individual configurations.
 
@@ -54,8 +54,9 @@ $> ./run.sh
 ~~~
 
 This script will create the CROM models, ConDL ontologies and Results of the Reasoner, as well as produce the measurements of the execution times for each step. In particular, it creates folders for each model complexity starting from `5` up to a defined upper bound. This bound can be easily modified by editing the `run.sh` script.
+More importantly, the CROM model generator is deterministic and will create the same set of CROM domain models, as used in our performance benchmark.
 
-## Results of the Performance Benchmark
+## Dataset
 
 The results of our performance benchmark have been collected in the [Dataset](Dataset/) folder.
 
