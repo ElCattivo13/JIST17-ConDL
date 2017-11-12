@@ -1,6 +1,6 @@
 # Reasoning on Context-Dependent Domain Models (Supplementary Material)
 
-Supplementary material for the [JIST 2017](http://www.ict.griffith.edu.au/aist/jist2017/JIST.php?id=home) publication *"Reasoning on Context-Dependent Domain Models"*.
+Supplementary material for the [JIST 2017](http://www.ict.griffith.edu.au/aist/jist2017/JIST.php?id=home) publication [*"Reasoning on Context-Dependent Domain Models"*](https://doi.org/10.1007/978-3-319-70682-5_5) by Stephan Böhme and Thomas Kühn.
 
 ## Getting the Running Example, Reproducible Benchmark, and Dataset
 
